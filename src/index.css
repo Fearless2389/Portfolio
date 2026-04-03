@@ -1,0 +1,202 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: #050505;
+    --surface: #0a0a0a;
+    --surface-glass: rgba(10, 10, 10, 0.7);
+    --border-glass: rgba(0, 245, 255, 0.1);
+    
+    --neon-cyan: #00f5ff;
+    --neon-blue: #0066ff;
+    --text-primary: #f0f0f0;
+    --text-muted: #9ca3af;
+
+    /* Glow Color tokens — tweak these to retheme entire glow system */
+    --glow-primary: rgba(0, 245, 255, 1);
+    --glow-secondary: rgba(0, 80, 220, 1);
+    --glow-primary-soft: rgba(0, 245, 255, 0.12);
+    --glow-secondary-soft: rgba(0, 80, 220, 0.12);
+  }
+  
+  body {
+    background-color: var(--background);
+    color: var(--text-primary);
+    font-family: 'Inter', system-ui, sans-serif;
+    background-image: 
+      linear-gradient(rgba(0, 245, 255, 0.025) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0, 245, 255, 0.025) 1px, transparent 1px);
+    background-size: 50px 50px;
+    background-attachment: fixed;
+    overflow-x: hidden;
+  }
+}
+
+@layer utilities {
+  /* ─── GLASS PANELS ─────────────────────────────── */
+  .glass-panel {
+    background: var(--surface-glass);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid var(--border-glass);
+  }
+  
+  .glass-panel-hover {
+    transition: border-color 0.35s ease, box-shadow 0.35s ease, transform 0.3s ease;
+  }
+  
+  /* Panel hover: chromatic offset glow — cyan one side, blue other */
+  .glass-panel-hover:hover {
+    border-color: rgba(0, 245, 255, 0.35);
+    transform: translateY(-2px);
+    box-shadow:
+      /* Sharp inner cyan glow on top edge */
+      0 -1px 0 0 rgba(0, 245, 255, 0.5),
+      /* Wide soft cyan halo */
+      0 0 25px 2px rgba(0, 245, 255, 0.06),
+      /* Offset blue glow below — the "chromatic split" */
+      0 8px 30px 0 rgba(0, 80, 220, 0.12);
+  }
+
+  /* ─── TEXT GLOW (SELECTIVE, BRANDED) ───────────── */
+
+  /* Standard: used sparingly on key labels */  
+  .text-glow {
+    text-shadow:
+      0 0 8px var(--glow-primary),
+      0 0 20px rgba(0, 245, 255, 0.3);
+  }
+
+  /* Signature glow — only for your NAME in the hero */
+  /* Layered: 1px sharp + wide diffuse + chromatic offset */
+  .text-glow-signature {
+    text-shadow:
+      /* Tight sharp white-cyan core */
+      0 0 2px rgba(255,255,255,0.9),
+      0 0 8px var(--glow-primary),
+      /* Wide primary diffuse */
+      0 0 40px rgba(0, 245, 255, 0.4),
+      /* Chromatic offset: blue bleeds to the right */
+      4px 0 20px rgba(0, 80, 220, 0.35),
+      /* And subtly left */
+      -2px 0 12px rgba(0, 200, 255, 0.15);
+  }
+
+  /* Breathing glow — for status indicators that should feel "alive" */
+  .text-glow-breathe {
+    animation: glow-breathe 3s ease-in-out infinite;
+  }
+
+  /* ─── NEON BORDER ───────────────────────────────── */
+  .neon-border {
+    position: relative;
+  }
+  
+  .neon-border::before {
+    content: '';
+    position: absolute;
+    inset: -1px;
+    background: linear-gradient(135deg, var(--neon-cyan), transparent 50%, var(--neon-blue));
+    z-index: -1;
+    border-radius: inherit;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+  
+  .neon-border:hover::before {
+    opacity: 0.5;
+  }
+
+  /* ─── BUTTON GLOW (SHARP + SOFT STACK) ─────────── */
+  /* Usage: add to primary CTA buttons only — not everything! */
+  .btn-glow {
+    box-shadow:
+      /* 1px pixel-sharp inner border light */
+      inset 0 1px 0 rgba(0,245,255,0.4),
+      /* Tight visible glow */
+      0 0 10px rgba(0, 245, 255, 0.4),
+      /* Wide secondary diffuse */
+      0 0 30px rgba(0, 245, 255, 0.1);
+    transition: box-shadow 0.3s ease;
+  }
+  .btn-glow:hover {
+    box-shadow:
+      inset 0 1px 0 rgba(0,245,255,0.7),
+      0 0 14px rgba(0, 245, 255, 0.8),
+      0 0 40px rgba(0, 245, 255, 0.25),
+      /* Chromatic bloom on hover */
+      0 0 60px rgba(0, 80, 220, 0.15);
+  }
+}
+
+/* ─── KEYFRAMES ─────────────────────────────────────── */
+
+/* Slow breathing pulse — for "ONLINE" indicators */
+@keyframes glow-breathe {
+  0%, 100% {
+    text-shadow:
+      0 0 4px var(--glow-primary),
+      0 0 12px rgba(0, 245, 255, 0.3);
+    opacity: 0.8;
+  }
+  50% {
+    text-shadow:
+      0 0 12px var(--glow-primary),
+      0 0 30px rgba(0, 245, 255, 0.6),
+      4px 0 20px rgba(0, 80, 220, 0.3);
+    opacity: 1;
+  }
+}
+
+/* Camera-flash flicker — use once on page load for hero text */
+@keyframes glow-flicker-in {
+  0%   { opacity: 0; text-shadow: none; }
+  5%   { opacity: 1; text-shadow: 0 0 30px #00f5ff, 0 0 60px #00f5ff; }
+  10%  { opacity: 0.4; }
+  15%  { opacity: 1; text-shadow: 0 0 20px #00f5ff, 4px 0 20px #0066ff; }
+  20%  { opacity: 0.9; }
+  100% { opacity: 1; text-shadow: 0 0 8px #00f5ff, 0 0 40px rgba(0,245,255,0.4), 4px 0 20px rgba(0,80,220,0.3); }
+}
+
+.text-flicker-in {
+  animation: glow-flicker-in 1.2s ease-out forwards;
+}
+
+/* HUD scanning line */
+.scanline {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 5px;
+  background: linear-gradient(to bottom, transparent, rgba(0, 245, 255, 0.4), transparent);
+  opacity: 0.5;
+  animation: scan 6s linear infinite;
+  pointer-events: none;
+  z-index: 50;
+}
+
+@keyframes scan {
+  0%   { top: -10%; }
+  100% { top: 110%; }
+}
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: var(--background); }
+::-webkit-scrollbar-thumb {
+  background: rgba(0, 245, 255, 0.15);
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover { background: rgba(0, 245, 255, 0.35); }
+
+/* Respect reduced motion — kill all non-essential animations */
+@media (prefers-reduced-motion: reduce) {
+  .scanline,
+  .text-glow-breathe,
+  .text-flicker-in {
+    animation: none !important;
+  }
+}
