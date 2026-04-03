@@ -1,73 +1,48 @@
-# React + TypeScript + Vite
+# Futuristic Developer Portfolio
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A highly creative, interactive developer portfolio website with a futuristic "command center" HUD aesthetic. 
 
-Currently, two official plugins are available:
+## Features
+- **Neon Command Center Aesthetics:** Dynamic glow effects, chromatic offsets, and layered stacking for a premium futuristic feel.
+- **Interactive UI:** Custom crosshair cursor, hover animations, and dynamic transitions.
+- **Easy Content Management:** All portfolio content (projects, skills, about me) is managed centrally in a single `src/data/portfolio.ts` file for effortless updates.
+- **Modern Tech Stack:** Built with React 19, TypeScript, Tailwind CSS, and Framer Motion, served by Vite for lightning-fast hmr.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## Accessing the Live Site
 
-## React Compiler
+Right now, your GitHub repository only hosts and stores the **code**. If you want a live link to view the portfolio as an actual website and share it with others, you will need to **deploy** it. 
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+### Recommended Deployment Method (Vercel)
 
-## Expanding the ESLint configuration
+Vercel is the easiest and fastest way to deploy a Vite React app directly from GitHub for free:
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+1. Go to [Vercel.com](https://vercel.com/) and sign up using your GitHub account.
+2. From your Vercel dashboard, click **Add New** > **Project**.
+3. Find your Portfolio repository in the list and click **Import**.
+4. Vercel will automatically detect that it's a Vite project. You don't need to change any build settings.
+5. Click **Deploy**.
+6. Give it a minute to build. Once complete, Vercel will provide you with a live, shareable URL (e.g., `https://your-portfolio.vercel.app`).
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+*(Alternatively, you can deploy to Netlify using the exact same steps, or configure GitHub Pages—though Vercel provides the easiest zero-config experience).*
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+## Local Development Setup
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+To run this project on your local machine:
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+1. Make sure you have Node.js installed.
+2. Clone your GitHub repository to your local machine.
+3. Open a terminal in the project directory and run:
+   ```bash
+   npm install
+   ```
+4. Start the local development server:
+   ```bash
+   npm run dev
+   ```
+5. Click the local link provided in the terminal (usually `http://localhost:5173/`) to view the application.
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+## Customizing Your Content
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+To update your portfolio's information, simply edit the `src/data/portfolio.ts` file. 
+- You can add or modify your projects, skills, email, and social links here. 
+- The entire website is built to dynamically read from this single file!
