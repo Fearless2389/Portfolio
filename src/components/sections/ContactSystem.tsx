@@ -1,16 +1,10 @@
-import { useState } from "react";
 import { motion } from "framer-motion";
 import { GlassPanel } from "../ui/GlassPanel";
 import { Send, TerminalSquare, AlertCircle } from "lucide-react";
+import { useForm, ValidationError } from "@formspree/react";
 
 export const ContactSystem = () => {
-  const [status, setStatus] = useState<"IDLE" | "SENDING" | "SENT">("IDLE");
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    setStatus("SENDING");
-    setTimeout(() => setStatus("SENT"), 2000);
-  };
+  const [state, handleSubmit] = useForm("mwvwybzr");
 
   return (
     <section id="contact" className="min-h-screen py-24 relative flex items-center">
@@ -46,28 +40,51 @@ export const ContactSystem = () => {
                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                  <div className="flex flex-col gap-2">
                    <label className="text-[10px] uppercase text-[var(--neon-cyan)] tracking-widest pl-1">Ident</label>
-                   <input required type="text" placeholder="NAME or ALIAS" className="bg-black/40 border border-gray-800 rounded px-4 py-3 text-white focus:outline-none focus:border-[var(--neon-blue)] transition-colors placeholder:text-gray-700" />
+                   <input 
+                    name="name"
+                    required 
+                    type="text" 
+                    placeholder="NAME or ALIAS" 
+                    className="bg-black/40 border border-gray-800 rounded px-4 py-3 text-white focus:outline-none focus:border-[var(--neon-blue)] transition-colors placeholder:text-gray-700"
+                    disabled={state.submitting || state.succeeded}
+                   />
                  </div>
                  <div className="flex flex-col gap-2">
                    <label className="text-[10px] uppercase text-[var(--neon-cyan)] tracking-widest pl-1">Return_Path</label>
-                   <input required type="email" placeholder="EMAIL ADDRESS" className="bg-black/40 border border-gray-800 rounded px-4 py-3 text-white focus:outline-none focus:border-[var(--neon-blue)] transition-colors placeholder:text-gray-700" />
+                   <input 
+                    name="email"
+                    required 
+                    type="email" 
+                    placeholder="EMAIL ADDRESS" 
+                    className="bg-black/40 border border-gray-800 rounded px-4 py-3 text-white focus:outline-none focus:border-[var(--neon-blue)] transition-colors placeholder:text-gray-700" 
+                    disabled={state.submitting || state.succeeded}
+                   />
+                   <ValidationError prefix="Email" field="email" errors={state.errors} className="text-red-500 text-xs mt-1" />
                  </div>
                </div>
 
                <div className="flex flex-col gap-2">
                    <label className="text-[10px] uppercase text-[var(--neon-cyan)] tracking-widest pl-1">Payload</label>
-                   <textarea required rows={5} placeholder="TRANSMISSION DATA..." className="bg-black/40 border border-gray-800 rounded px-4 py-3 text-white focus:outline-none focus:border-[var(--neon-blue)] transition-colors placeholder:text-gray-700 resize-none" />
+                   <textarea 
+                    name="message"
+                    required 
+                    rows={5} 
+                    placeholder="TRANSMISSION DATA..." 
+                    className="bg-black/40 border border-gray-800 rounded px-4 py-3 text-white focus:outline-none focus:border-[var(--neon-blue)] transition-colors placeholder:text-gray-700 resize-none" 
+                    disabled={state.submitting || state.succeeded}
+                   />
+                   <ValidationError prefix="Message" field="message" errors={state.errors} className="text-red-500 text-xs mt-1" />
                </div>
 
                <button 
                  type="submit" 
-                 disabled={status !== "IDLE"}
+                 disabled={state.submitting || state.succeeded}
                  className="relative w-full py-4 mt-4 bg-[var(--surface)] border border-[var(--neon-cyan)] text-[var(--neon-cyan)] uppercase tracking-widest text-sm hover:bg-[var(--neon-cyan)]/10 transition-all focus:outline-none focus:ring-2 focus:ring-[var(--neon-blue)] disabled:opacity-50 disabled:cursor-not-allowed group overflow-hidden"
                >
                  <span className="relative z-10 flex items-center justify-center gap-2 font-bold text-glow">
-                   {status === "IDLE" && <><Send size={18} className="group-hover:translate-x-1 transition-transform" /> EXECUTE_TRANSMISSION</>}
-                   {status === "SENDING" && <><div className="w-4 h-4 border-2 border-[var(--neon-cyan)] border-t-transparent rounded-full animate-spin" /> ENCRYPTING...</>}
-                   {status === "SENT" && <><AlertCircle size={18} /> TRANSMISSION_SUCCESS</>}
+                   {!state.submitting && !state.succeeded && <><Send size={18} className="group-hover:translate-x-1 transition-transform" /> EXECUTE_TRANSMISSION</>}
+                   {state.submitting && <><div className="w-4 h-4 border-2 border-[var(--neon-cyan)] border-t-transparent rounded-full animate-spin" /> ENCRYPTING...</>}
+                   {state.succeeded && <><AlertCircle size={18} className="text-green-400" /> <span className="text-green-400">TRANSMISSION_SUCCESS</span></>}
                  </span>
                  <div className="absolute top-0 left-0 w-full h-[2px] bg-gradient-to-r from-transparent via-[var(--neon-cyan)] to-transparent group-hover:animate-scan" />
                </button>

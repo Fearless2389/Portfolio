@@ -54,7 +54,7 @@ export const HeroTerminal = () => {
              <h1 className="text-5xl md:text-7xl font-bold tracking-tighter mb-4">
                <span className="text-white block">HELLO.</span>
                <span className="text-gray-400">I AM_</span>
-               <span className="text-[var(--neon-blue)] text-glow-signature text-flicker-in inline-block">{PORTFOLIO_DATA.profile.name.toUpperCase()}</span>
+               <span className="text-white inline-block">{PORTFOLIO_DATA.profile.name.toUpperCase()}</span>
              </h1>
              
              {/* The Typing Effect */}
@@ -89,16 +89,21 @@ export const HeroTerminal = () => {
             </div>
 
             <div className="flex flex-wrap gap-4 mt-8">
-              <a href="#projects" className="btn-glow relative group overflow-hidden px-8 py-3 bg-[var(--neon-blue)] text-black font-system font-bold tracking-widest text-sm hover:bg-[var(--neon-cyan)] transition-colors">
+              <a href="#projects" className="relative group overflow-hidden px-8 py-3 bg-[var(--neon-blue)] text-black font-system font-bold tracking-widest text-sm hover:bg-[var(--neon-cyan)] transition-colors">
                  <span className="relative z-10 flex items-center gap-2">
                    DEPLOY_MODULES
                  </span>
                  <div className="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-out" />
               </a>
-              <button className="px-8 py-3 bg-transparent border border-[var(--neon-cyan)] text-[var(--neon-cyan)] font-system font-bold tracking-widest text-sm hover:bg-[var(--neon-cyan)]/10 transition-colors flex items-center gap-2">
+              <a 
+                href={PORTFOLIO_DATA.profile.resumeUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="px-8 py-3 bg-transparent border border-[var(--neon-cyan)] text-[var(--neon-cyan)] font-system font-bold tracking-widest text-sm hover:bg-[var(--neon-cyan)]/10 transition-colors flex items-center gap-2"
+              >
                 <Download size={16} />
                 EXTRACT_RESUME
-              </button>
+              </a>
             </div>
           </motion.div>
           
